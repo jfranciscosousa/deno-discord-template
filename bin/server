@@ -1,0 +1,3 @@
+#!/bin/sh
+
+deno run --allow-net=discord.com,gateway.discord.gg --allow-read=.env,.env.defaults --watch src/dev.ts
