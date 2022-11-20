@@ -2,7 +2,6 @@ import { getApplicationCommands, upsertApplicationCommands } from "discord";
 import bot from "@/bot.ts";
 import { COMMANDS } from "@/commands/mod.ts";
 
-console.log(bot.rest.globallyRateLimited);
 const existingCommands = (await getApplicationCommands(bot)).array();
 
 const commandsWithId = Object.values(COMMANDS).map((command) => {
@@ -15,7 +14,9 @@ const commandsWithId = Object.values(COMMANDS).map((command) => {
   return { ...command, id: existingCommandId };
 });
 
-await upsertApplicationCommands(bot, commandsWithId);
+bot.activeGuildIds.forEach(
+  async (guildId) => await upsertApplicationCommands(bot, commandsWithId, guildId)
+);
 
 console.log(`New commands: ${commandsWithId.length - existingCommands.length}`);
 console.log(`Updated commands: ${existingCommands.length}`);

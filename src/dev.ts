@@ -25,5 +25,10 @@ bot.events.interactionCreate = async (_bot, interaction) => {
 
   const response = await command.handler(interaction);
 
-  await sendInteractionResponse(bot, interaction.id, interaction.token, response);
+  await sendInteractionResponse(
+    bot,
+    interaction.id,
+    interaction.token,
+    response
+  );
 };
