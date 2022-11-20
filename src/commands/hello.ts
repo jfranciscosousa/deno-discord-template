@@ -3,7 +3,6 @@ import {
   ApplicationCommandTypes,
   Interaction,
   InteractionResponseTypes,
-  User,
 } from "discord";
 import { Command } from "@/commands/mod.ts";
 
