@@ -1,6 +1,11 @@
 import { json, serve, validateRequest } from "sift";
 import { camelize } from "https://deno.land/x/camelize@2.0.0/mod.ts";
-import { Interaction, verifySignature } from "discord";
+import {
+  Interaction,
+  InteractionResponseTypes,
+  InteractionTypes,
+  verifySignature,
+} from "discord";
 import config from "@/config.ts";
 import { COMMANDS } from "@/commands/mod.ts";
 
@@ -45,18 +50,33 @@ async function home(request: Request) {
 
   const interaction = camelize<Interaction>(JSON.parse(body)) as Interaction;
 
+  if (interaction.type === InteractionTypes.Ping) {
+    return json({
+      type: InteractionResponseTypes.Pong,
+    });
+  }
+
   const commandName = interaction.data?.name;
 
   if (!commandName) {
-    console.log("Unknown command!");
-    return json({ error: "bad request" }, { status: 400 });
+    return json({
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content:
+          "Something went wrong. I was not able to find the command name in the payload sent by Discord.",
+      },
+    });
   }
 
   const command = COMMANDS[commandName];
 
   if (!command) {
-    console.error("Unknown command!");
-    return json({ error: "bad request" }, { status: 400 });
+    return json({
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content: "Something went wrong. I was not able to find this command.",
+      },
+    });
   }
 
   return json(await command.handler(interaction));
