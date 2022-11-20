@@ -11,11 +11,11 @@ import { COMMANDS } from "@/commands/mod.ts";
 
 // For all requests to "/" endpoint, we want to invoke home() handler.
 serve({
-  "/": home,
+  "/": main,
 });
 
 // The main logic of the Discord Slash Command is defined in this function.
-async function home(request: Request) {
+async function main(request: Request) {
   // validateRequest() ensures that a request is of POST method and
   // has the following headers.
   const { error } = await validateRequest(request, {
@@ -50,6 +50,7 @@ async function home(request: Request) {
 
   const interaction = camelize<Interaction>(JSON.parse(body)) as Interaction;
 
+  // Handles Discord API pings to validate webhooks
   if (interaction.type === InteractionTypes.Ping) {
     return json({
       type: InteractionResponseTypes.Pong,
@@ -58,6 +59,7 @@ async function home(request: Request) {
 
   const commandName = interaction.data?.name;
 
+  // If somehow we don't ahve a command name, return a specific error
   if (!commandName) {
     return json({
       type: InteractionResponseTypes.ChannelMessageWithSource,
@@ -70,6 +72,7 @@ async function home(request: Request) {
 
   const command = COMMANDS[commandName];
 
+  // If somehow, we receive a command for which we have no handlers, return a specific error
   if (!command) {
     return json({
       type: InteractionResponseTypes.ChannelMessageWithSource,
