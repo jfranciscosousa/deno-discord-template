@@ -1,29 +1,40 @@
-import { getApplicationCommands, upsertApplicationCommands } from "discord";
+import {
+  getApplicationCommands,
+  startBot,
+  upsertApplicationCommands,
+} from "discord";
 import bot from "@/bot.ts";
 import { COMMANDS } from "@/commands/mod.ts";
 
-// Get existing commands
-const existingCommands = (await getApplicationCommands(bot)).array();
+await startBot(bot);
 
-// Add the existing ids to existing commands so we update them instead of creating
-const commandsWithId = Object.values(COMMANDS).map((command) => {
-  const existingCommandId = existingCommands.find(
-    (c) => c.name === command.name
-  )?.id;
+bot.events.ready = async (_bot, { guilds }) => {
+  // Get existing commands
+  const existingCommands = (await getApplicationCommands(bot)).array();
 
-  if (!existingCommandId) return command;
+  // Add the existing ids to existing commands so we update them instead of creating
+  const commandsWithId = Object.values(COMMANDS).map((command) => {
+    const existingCommandId = existingCommands.find(
+      (c) => c.name === command.name
+    )?.id;
 
-  return { ...command, id: existingCommandId };
-});
+    if (!existingCommandId) return command;
 
-// For each guild, upsert existing commands
-bot.activeGuildIds.forEach(
-  async (guildId) =>
-    await upsertApplicationCommands(bot, commandsWithId, guildId)
-);
+    return { ...command, id: existingCommandId };
+  });
 
-console.log(`Updated guilds: ${bot.activeGuildIds.size}`);
-console.log(`New commands: ${commandsWithId.length - existingCommands.length}`);
-console.log(`Updated commands: ${existingCommands.length}`);
+  // For each guild, upsert existing commands
+  await Promise.all(
+    Array.from(guilds).map((guildId) =>
+      upsertApplicationCommands(bot, commandsWithId, guildId)
+    )
+  );
 
-Deno.exit();
+  console.log(`Updated guilds: ${guilds.length}`);
+  console.log(
+    `New commands: ${commandsWithId.length - existingCommands.length}`
+  );
+  console.log(`Updated commands: ${existingCommands.length}`);
+
+  Deno.exit();
+};

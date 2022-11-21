@@ -20,3 +20,8 @@ export interface Command extends CreateApplicationCommand {
     interaction: Interaction
   ) => Promise<InteractionResponse> | InteractionResponse;
 }
+
+export function getOptionValue<T>(interaction: Interaction, optionName: string) {
+  return interaction.data?.options?.find((option) => option.name === optionName)
+    ?.value as T;
+}

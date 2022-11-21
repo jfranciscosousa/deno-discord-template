@@ -4,28 +4,33 @@ import {
   Interaction,
   InteractionResponseTypes,
 } from "discord";
-import { Command } from "@/commands/mod.ts";
+import { Command, getOptionValue } from "@/commands/mod.ts";
 
 const HELLO_COMMAND: Command = {
   name: "hello",
-  description: "Says hello to the person you want!",
+  description: "Says hello to any user!",
   options: [
     {
-      name: "person",
-      description: "The person",
+      name: "user",
+      description: "The user",
       type: ApplicationCommandOptionTypes.User,
       required: true,
     },
   ],
   type: ApplicationCommandTypes.ChatInput,
   handler: (interaction: Interaction) => {
-    const name = interaction.data?.options?.find(
-      (option) => option.name === "person"
-    )?.value;
+    const userId = getOptionValue<bigint>(interaction, "user");
+
+    if (!userId) {
+      return {
+        type: InteractionResponseTypes.ChannelMessageWithSource,
+        data: { content: `User doesn't exist!` },
+      };
+    }
 
     return {
       type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: { content: `Hello, ${name}!` },
+      data: { content: `Hello, <@${userId}>!` },
     };
   },
 };
