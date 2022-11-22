@@ -7,11 +7,6 @@ import {
 import PING_COMMAND from "@/commands/ping.ts";
 import HELLO_COMMAND from "@/commands/hello.ts";
 
-export const COMMANDS = {
-  [PING_COMMAND.name]: PING_COMMAND,
-  [HELLO_COMMAND.name]: HELLO_COMMAND,
-};
-
 export interface Command extends CreateApplicationCommand {
   name: string;
   description: string;
@@ -21,7 +16,15 @@ export interface Command extends CreateApplicationCommand {
   ) => Promise<InteractionResponse> | InteractionResponse;
 }
 
-export function getOptionValue<T>(interaction: Interaction, optionName: string) {
+export function getOptionValue<T>(
+  interaction: Interaction,
+  optionName: string
+) {
   return interaction.data?.options?.find((option) => option.name === optionName)
     ?.value as T;
 }
+
+export const COMMANDS: Record<string, Command> = {
+  [PING_COMMAND.name]: PING_COMMAND,
+  [HELLO_COMMAND.name]: HELLO_COMMAND,
+};
