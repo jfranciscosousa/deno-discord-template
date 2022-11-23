@@ -4,9 +4,9 @@ import {
   Interaction,
   InteractionResponseTypes,
 } from "discord";
-import { Command, getOptionValue } from "@/commands/mod.ts";
+import { Command, getOptionValue } from "@/commands/utils.ts";
 
-const HELLO_COMMAND: Command = {
+const HELLO_COMMAND: Command<{ userId?: bigint }> = {
   name: "hello",
   description: "Says hello to any user!",
   options: [
@@ -18,9 +18,10 @@ const HELLO_COMMAND: Command = {
     },
   ],
   type: ApplicationCommandTypes.ChatInput,
-  handler: (interaction: Interaction) => {
-    const userId = getOptionValue<bigint>(interaction, "user");
-
+  buildArguments: (interaction: Interaction) => ({
+    userId: getOptionValue<bigint>(interaction, "user"),
+  }),
+  handler: ({ userId }) => {
     if (!userId) {
       return {
         type: InteractionResponseTypes.ChannelMessageWithSource,

@@ -1,7 +1,7 @@
 import { sendInteractionResponse, startBot } from "discord";
 import bot from "@/bot.ts";
 import config from "@/config.ts";
-import { COMMANDS } from "@/commands/mod.ts";
+import { COMMANDS } from "@/commands.ts";
 
 await startBot(bot);
 console.log(
@@ -25,7 +25,9 @@ bot.events.interactionCreate = async (_bot, interaction) => {
     return;
   }
 
-  const response = await command.handler(interaction);
+  const response = await command.handler(
+    command.buildArguments ? command.buildArguments(interaction) : undefined
+  );
 
   await sendInteractionResponse(
     bot,

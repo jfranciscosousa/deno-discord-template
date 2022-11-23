@@ -4,7 +4,7 @@ import {
   upsertApplicationCommands,
 } from "discord";
 import bot from "@/bot.ts";
-import { COMMANDS } from "@/commands/mod.ts";
+import { COMMANDS } from "@/commands.ts";
 
 await startBot(bot);
 

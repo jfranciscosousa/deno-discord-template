@@ -1,5 +1,5 @@
 import { json, serve, validateRequest } from "sift";
-import { camelize } from "https://deno.land/x/camelize@2.0.0/mod.ts";
+import { camelize } from "camelize";
 import {
   Interaction,
   InteractionResponseTypes,
@@ -7,7 +7,7 @@ import {
   verifySignature,
 } from "discord";
 import config from "@/config.ts";
-import { COMMANDS } from "@/commands/mod.ts";
+import { COMMANDS } from "@/commands.ts";
 
 // For all requests to "/" endpoint, we want to invoke home() handler.
 serve({
@@ -82,5 +82,9 @@ async function main(request: Request) {
     });
   }
 
-  return json(await command.handler(interaction));
+  return json(
+    await command.handler(
+      command.buildArguments ? command.buildArguments(interaction) : undefined
+    )
+  );
 }
