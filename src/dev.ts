@@ -11,6 +11,8 @@ console.log(
 bot.events.interactionCreate = async (_bot, interaction) => {
   const commandName = interaction.data?.name;
 
+  console.log(`DEBUG: Incoming command: ${commandName}`);
+
   if (!commandName) {
     console.log("Unknown command!");
     return;
