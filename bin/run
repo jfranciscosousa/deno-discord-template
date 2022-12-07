@@ -1,3 +1,0 @@
-#!/bin/sh
-
-deno run --allow-read=.env,.env.defaults --allow-net=discord.com,gateway.discord.gg --allow-env $1

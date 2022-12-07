@@ -4,14 +4,18 @@ import { InteractionResponseTypes } from "https://deno.land/x/discordeno@13.0.0/
 
 Deno.test("hello command", async (t) => {
   await t.step("says hello to an user", async () => {
-    assertEquals(await HELLO_COMMAND.handler({ userId: BigInt(1) }), {
+    const response = await HELLO_COMMAND.handler({ userId: BigInt(1) });
+
+    assertEquals(response, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: { content: `Hello, <@1>!` },
     });
   });
 
   await t.step("fails if user doesn't exist", async () => {
-    assertEquals(await HELLO_COMMAND.handler({ userId: undefined }), {
+    const response = await HELLO_COMMAND.handler({ userId: undefined });
+
+    assertEquals(response, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: { content: "User doesn't exist!" },
     });

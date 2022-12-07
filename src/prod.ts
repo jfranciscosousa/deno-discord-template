@@ -59,7 +59,7 @@ async function main(request: Request) {
 
   const commandName = interaction.data?.name;
 
-  // If somehow we don't ahve a command name, return a specific error
+  // If somehow we don't have a command name, return a specific error
   if (!commandName) {
     return json({
       type: InteractionResponseTypes.ChannelMessageWithSource,
