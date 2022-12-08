@@ -1,6 +1,6 @@
 import { Interaction, InteractionTypes, UserToggles } from "discord";
 
-export function buildCommand(data: Interaction["data"]): Interaction {
+export function buildMockInteraction(data: Interaction["data"]): Interaction {
   return {
     id: BigInt(1),
     applicationId: BigInt(1),

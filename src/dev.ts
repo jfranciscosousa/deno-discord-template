@@ -31,9 +31,7 @@ bot.events.interactionCreate = async (_bot, interaction) => {
     return;
   }
 
-  const response = await command.handler(
-    command.buildArguments ? command.buildArguments(interaction) : undefined
-  );
+  const response = await command.handleInteraction(interaction);
 
   await sendInteractionResponse(
     bot,

@@ -5,6 +5,7 @@
     "camelize": "https://deno.land/x/camelize@2.0.0/mod.ts",
     "discord": "https://deno.land/x/discordeno@13.0.0/mod.ts",
     "dotenv": "https://deno.land/x/dotenv@v3.2.0/mod.ts",
-    "sift": "https://deno.land/x/sift@0.6.0/mod.ts"
+    "sift": "https://deno.land/x/sift@0.6.0/mod.ts",
+    "zod": "https://deno.land/x/zod@v3.20.0/mod.ts"
   }
 }

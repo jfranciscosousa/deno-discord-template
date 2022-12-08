@@ -1,7 +1,7 @@
 import { ApplicationCommandTypes, InteractionResponseTypes } from "discord";
-import { Command } from "@/commands/utils.ts";
+import { buildCommand } from "@/commands/utils.ts";
 
-const PING_COMMAND: Command = {
+const PING_COMMAND = buildCommand({
   name: "ping",
   description: "Pings you back!",
   type: ApplicationCommandTypes.ChatInput,
@@ -11,6 +11,6 @@ const PING_COMMAND: Command = {
       data: { content: "Pong!" },
     };
   },
-};
+});
 
 export default PING_COMMAND;

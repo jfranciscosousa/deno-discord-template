@@ -18,7 +18,7 @@ jobs:
           deno-version: 1.28.1
 
       - name: Upsert commands
-        run: bin/run tasks/upsert_commands_task.ts
+        run: deno task run tasks/upsert_commands_task.ts
         env:
           DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
           DISCORD_PUBLIC_KEY: ${{ secrets.DISCORD_PUBLIC_KEY }}

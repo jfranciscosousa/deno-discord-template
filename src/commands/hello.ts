@@ -4,9 +4,10 @@ import {
   Interaction,
   InteractionResponseTypes,
 } from "discord";
-import { Command, getOptionValue } from "@/commands/utils.ts";
+import { z } from "zod";
+import { buildCommand, getOptionValue } from "@/commands/utils.ts";
 
-const HELLO_COMMAND: Command<{ userId?: bigint }> = {
+const HELLO_COMMAND = buildCommand({
   name: "hello",
   description: "Says hello to any user!",
   options: [
@@ -18,22 +19,19 @@ const HELLO_COMMAND: Command<{ userId?: bigint }> = {
     },
   ],
   type: ApplicationCommandTypes.ChatInput,
-  buildArguments: (interaction: Interaction) => ({
-    userId: getOptionValue<bigint>(interaction, "user"),
-  }),
-  handler: ({ userId }) => {
-    if (!userId) {
-      return {
-        type: InteractionResponseTypes.ChannelMessageWithSource,
-        data: { content: `User doesn't exist!` },
-      };
-    }
+  buildArguments: (interaction: Interaction) => {
+    const schema = z.object({ userId: z.string() });
 
+    return schema.parse({
+      userId: getOptionValue<string>(interaction, "user"),
+    });
+  },
+  handler: ({ userId }) => {
     return {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: { content: `Hello, <@${userId}>!` },
     };
   },
-};
+});
 
 export default HELLO_COMMAND;

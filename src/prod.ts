@@ -82,9 +82,5 @@ async function main(request: Request) {
     });
   }
 
-  return json(
-    await command.handler(
-      command.buildArguments ? command.buildArguments(interaction) : undefined
-    )
-  );
+  return json(await command.handleInteraction(interaction));
 }
