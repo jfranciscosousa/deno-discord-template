@@ -123,8 +123,28 @@ export default HELLO_COMMAND;
 
 We offer you the `buildArguments` function that also defines the argument type of `handler`. You can also validate the parameters with something like `zod`. Also, our `getOptionValue` utility just lets you extract the value or any argument you desire.
 
+To add new commands just create new files under `src/commands` and then load them on `src/commands.ts`
+
+```typescript
+import PING_COMMAND from "@/commands/ping.ts";
+import HELLO_COMMAND from "@/commands/hello.ts";
+import { Command } from "@/commands/utils.ts";
+
+// deno-lint-ignore no-explicit-any
+export const COMMANDS: Record<string, Command<any>> = {
+  [PING_COMMAND.name]: PING_COMMAND,
+  [HELLO_COMMAND.name]: HELLO_COMMAND,
+};
+```
+
 ## Testing
 
 As we are separating the logic of parsing command arguments, we can individually just test our commands through the `handler`. Check the `hello_test.ts` and `ping_test.ts` examples under `test/commands`.
 
 Working on tests for `buildArguments` though.
+
+## TODO
+
+- Autoload of some sort. Right now we need to create new files for commands, which is fine, but we also need to add them to `src/commands.ts`. Would be great to just auto-load all files under `src/commands`
+- Integrated command options parsing and validation. Ideally we could immediatly translate the `options` array of a command into a `zod` schema and have true end to end type safety
+- Easy way to test `handleInteraction` with some true Discord payloads so we can also test options parsing
