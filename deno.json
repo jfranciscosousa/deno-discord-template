@@ -1,7 +1,7 @@
 {
   "importMap": "import_map.json",
   "tasks": {
-    "dev": "deno run --allow-net=discord.com,gateway.discord.gg --allow-read=.env,.env.defaults --allow-env --watch src/dev.ts",
-    "run": "deno run --allow-read=.env,.env.defaults --allow-net=discord.com,gateway.discord.gg --allow-env"
+    "dev": "deno run --allow-net=discord.com,gateway.discord.gg --allow-read=.env,.env.defaults,src/commands --allow-env --watch src/dev.ts",
+    "run": "deno run --allow-read=.env,.env.defaults,src/commands --allow-net=discord.com,gateway.discord.gg --allow-env"
   }
 }

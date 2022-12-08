@@ -4,6 +4,7 @@ import config from "@/config.ts";
 import { COMMANDS } from "@/commands.ts";
 
 await startBot(bot);
+
 console.log(
   `https://discord.com/api/oauth2/authorize?client_id=${config.DISCORD_APPLICATION_ID}&scope=bot%20applications.commands`
 );

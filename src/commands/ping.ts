@@ -1,5 +1,5 @@
 import { ApplicationCommandTypes, InteractionResponseTypes } from "discord";
-import { buildCommand } from "@/commands/utils.ts";
+import { buildCommand } from "@/commands.ts";
 
 const PING_COMMAND = buildCommand({
   name: "ping",

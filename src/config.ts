@@ -29,11 +29,14 @@ const parsedConfig = configSchema.safeParse({
 });
 
 if (!parsedConfig.success) {
-  console.error("\x1b[31m%s\x1b[0m", "Environment variables error, please review them!")
-  console.error("\x1b[31m%s\x1b[0m", parsedConfig.error)
+  console.error(
+    "\x1b[31m%s\x1b[0m",
+    "Environment variables error, please review them!"
+  );
+  console.error("\x1b[31m%s\x1b[0m", parsedConfig.error);
   Deno.exit(-1);
 }
 
-const config = parsedConfig.success ? parsedConfig.data : undefined;
+const config = parsedConfig.data;
 
 export default config;
