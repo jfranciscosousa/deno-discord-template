@@ -5,7 +5,7 @@ import {
   InteractionResponseTypes,
 } from "discord";
 import { z } from "zod";
-import { buildCommand, getOptionValue } from "@/commands.ts";
+import { buildCommand, getOptionValue } from "@/commands/utils.ts";
 
 const HELLO_COMMAND = buildCommand({
   name: "hello",
