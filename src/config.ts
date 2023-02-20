@@ -1,5 +1,6 @@
 import { config as dotenv } from "dotenv";
 import { z } from "zod";
+import { generateErrorMessage } from "zod-error";
 
 function loadEnv() {
   // Deno.readFileSync doesn't exist on serverless contexts
@@ -13,27 +14,30 @@ function loadEnv() {
   return Deno.env.toObject();
 }
 
-const { DISCORD_APPLICATION_ID, DISCORD_PUBLIC_KEY, DISCORD_BOT_TOKEN } =
-  loadEnv();
+const env = loadEnv();
 
 const configSchema = z.object({
-  DISCORD_APPLICATION_ID: z.bigint(),
+  DISCORD_APPLICATION_ID: z.preprocess(
+    (value) => BigInt(String(value)),
+    z.bigint()
+  ),
   DISCORD_PUBLIC_KEY: z.string(),
   DISCORD_BOT_TOKEN: z.string(),
 });
 
-const parsedConfig = configSchema.safeParse({
-  DISCORD_APPLICATION_ID: BigInt(DISCORD_APPLICATION_ID),
-  DISCORD_PUBLIC_KEY,
-  DISCORD_BOT_TOKEN,
-});
+const parsedConfig = configSchema.safeParse(env);
 
 if (!parsedConfig.success) {
   console.error(
     "\x1b[31m%s\x1b[0m",
     "Environment variables error, please review them!"
   );
-  console.error("\x1b[31m%s\x1b[0m", parsedConfig.error);
+  console.error(
+    "\x1b[31m%s\x1b[0m",
+    generateErrorMessage(parsedConfig.error.issues, {
+      delimiter: { error: "\n" },
+    })
+  );
   Deno.exit(-1);
 }
 
