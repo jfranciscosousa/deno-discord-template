@@ -17,10 +17,7 @@ function loadEnv() {
 const env = loadEnv();
 
 const configSchema = z.object({
-  DISCORD_APPLICATION_ID: z.preprocess(
-    (value) => BigInt(String(value)),
-    z.bigint()
-  ),
+  DISCORD_APPLICATION_ID: z.string().regex(/^\d+$/).transform(BigInt),
   DISCORD_PUBLIC_KEY: z.string(),
   DISCORD_BOT_TOKEN: z.string(),
 });
