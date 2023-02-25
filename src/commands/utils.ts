@@ -74,10 +74,7 @@ export function buildCommand<T>(commandProps: BuildCommandArgs<T>): Command<T> {
   };
 }
 
-export function getOptionValue<T>(
-  interaction: Interaction,
-  optionName: string
-) {
+export function getOptionValue(interaction: Interaction, optionName: string) {
   return interaction.data?.options?.find((option) => option.name === optionName)
-    ?.value as T;
+    ?.value;
 }

@@ -23,7 +23,7 @@ const HELLO_COMMAND = buildCommand({
     const schema = z.object({ userId: z.string() });
 
     return schema.parse({
-      userId: getOptionValue<string>(interaction, "user"),
+      userId: getOptionValue(interaction, "user"),
     });
   },
   handler: ({ userId }) => {
